@@ -1,0 +1,5 @@
+*
+!.gitignore
+!shell_cmds.sh
+!split_covtype_data.py
+!red_data.py
