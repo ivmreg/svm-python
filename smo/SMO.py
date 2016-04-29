@@ -18,7 +18,7 @@ class SMO:
         self.b = 0
         self.w = np.zeros(self.xs.shape[1])
         self.L = 0
-        self.c = 0.1
+        self.c = 4
         self.eps = 0.001
         self.H = self.c
         self.point = self.x_train
@@ -29,25 +29,40 @@ class SMO:
         self.E_cache = np.zeros(self.num_samp)
         self.target = self.ys
     
-    def stopping_criteria_1(self):
-        #cond 1 and cond 2 guaranteed by algo
-        #cond1 = np.dot(self.ys, self.alphas) == 0
-        #cond2 = 0 <= np.min(self.alphas) and self.c>= np.max(self.alphas)
-        cond3 = True
-        for i in range(0, self.num_samp):
-            ygx = self.target[i] * self.SVM_out(i)
-            if self.alphas[i] == 0:
-                cond3 = ygx >= 1 - self.eps
-            elif self.alphas[i] == self.c:
-                cond3 = ygx <= 1 + self.eps
-            else:
-                cond3 = abs(ygx - 1) < self.eps
+    def grad_alph(self, i):
+        return  self.y_train[i] * self.point[i].dot(self.w.T) - 1
+    def stopping_criteria(self, ty=1):
+        if ty==1:
+            return not(self.examineAll or self.numChanged > 0)
+        elif ty==3:
+            l_val = 0
+            u_val = 10 ** 10
+            for i in range(len(self.alphas)):
+                if (self.alphas[i] < self.c and self.y_train[i] == 1) or (self.alphas[i] == self.c) :
+                    l_val = max(self.b - self.y_train[i] * self.grad_alph(i), l_val)
+                else:
+                    u_val = min(-self.y_train[i] * self.grad_alph(i) + self.b, u_val)
+            return (u_val - l_val + self.eps >= 0)[0]
+        elif ty==2:
+            term1 = self.w.dot(self.w.T) - np.sum(self.alphas)
+            term2 = 0
+            for i in range(len(self.alphas)):
+                xii = 1 - self.y_train[i] * self.SVM_out(i)
+                term2 += xii
+            return abs(term1 + self.c * term2) <= self.eps
+    
+    def get_accu(self):
+        """
+        Run on test data
+        """
+        x_test, y_test = load_svmlight_file(self.testpath)
+        corr = 0
+        for i in range(x_test.shape[0]):
+            if np.sign(self.SVM_eval(x_test[i])) == y_test[i]:
+                corr +=1
+        
+        return corr * 1.0/x_test.shape[0]
 
-            if not cond3:
-                break
-        return cond3
-    
-    
     def SVM_out(self, i):
         #xi*self.w + w0, sparse
         return (self.point[i].dot(self.w.T) - self.b)
@@ -55,7 +70,7 @@ class SMO:
     def SVM_eval(self, point):
         return (point.dot(self.w.T) - self.b)[0, 0]
 
-    @lfu_cache(100000) #caching the last 100000 results
+    @lru_cache(100000) #caching the last 100000 results
     def kernel(self, i1, i2):
         return self.point[i1].dot(self.point[i2].T)[0, 0]
     
@@ -149,9 +164,12 @@ class SMO:
         return 0
     
         
-    def train(self):
+    def train(self, stop_crit=1):
         it = 0
-        while (self.examineAll or self.numChanged > 0) and not self.stopping_criteria_1():
+        while not self.stopping_criteria(stop_crit):
+            if stop_crit!=1 and self.stopping_criteria(1):
+                print "Stopping criteria 1 already satisfied"
+                break
             it += 1
             self.numChanged = 0
             if self.examineAll:

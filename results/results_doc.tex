@@ -1,0 +1,134 @@
+\documentclass{article}
+\title{CS678 Assignment 2}
+\author{Pranav Maneriker, 12497}
+
+
+
+\begin{document}
+\maketitle
+\section{Info}
+For question 1, subsets of the datasets are chosen:
+\begin{enumerate}
+\item Covtypes : 100 pts train, 300 pts test
+\item rcv1: 40 pts train, 120 pts test
+\end{enumerate}
+\begin{table}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Dataset} & \textbf{Train time(sec)} & \textbf{Stopping Criteria} & \textbf{Iterations} & \textbf{Accuracy} \\ \hline
+leukemia         & (2.37, 2.37, 2.37)  & (1, 2*, 3*)   & (14, 16, 13) & (73.52, 73.52, 73.52) \% \\ \hline
+leukemia, scaled & 2.53  & 1   & 13 & 64.7\% \\ \hline
+leukemia, scaled & 3.14  & 2   & 14 & 64.8\% \\ \hline
+leukemia, scaled & 3.56  & 3*   & 16 & 64.7\% \\ \hline
+rcv1			 & 2.91  & 1    & 13 & 83.19\% \\ \hline
+rcv1			 & 3.38  & 2*  & 14  & 84.03\% \\ \hline
+rcv1-scaled 	 & (2.99, 3.76, 3.61) & (1, 2*, 3*) & (14, 15, 13) & (86.55, 86.55, 86.55) \\ \hline
+covtype          & 9.04  & 1   & 18 & 44.81 \% \\ \hline
+covtype          & 12.58 & 2*  & 24 & 57.19 \% \\ \hline
+covtype          & 12.01 & 3*  & 18 & 60.86\% \\ \hline
+
+\end{tabular}
+\caption{Chunking}
+\end{table}
+
+\begin{table}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Dataset} & \textbf{Train time(sec)} & \textbf{Stopping Criteria} & \textbf{Iterations} & \textbf{Accuracy} \\ \hline
+leukemia         & 15.40  & 1   & 38 & 82.35 \% \\ \hline
+leukemia, scaled & 25.81  & 1   & 13 & 88.23\% \\ \hline
+rcv1			 & 10.19  & 1    & 23 & 85.71\% \\ \hline
+rcv1-scaled 	 & (2.99, 3.76, 3.61) & 1 & 23 & 86.55 \\ \hline
+covtype          & 90.56  & 1   & 594 & 66.88 \% \\ \hline
+
+\end{tabular}
+\caption{SMO}
+\end{table}
+
+For SMO, the implementation follows the pseudocode given in Platt's paper
+
+
+\section{Liblinear}
+The training times as well as the testing time are of the orders of a few seconds, even with the full datasets.
+Detailed parameter tuning tables and related data can be found in the ipython notebook \verb|liblinear_tests.ipynb|
+\begin{table}
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Dataset}                  & \textbf{C}        & \textbf{Reported Accuracy}       \\ \hline
+    leukemia                 & 0.25     & 79.41\% (27/34)         \\ \hline
+    leukemia with scaling    & 0.5      & 88.23\% (30/34)         \\ \hline
+    rcv1                     & 1        & 96.15\% (651374/677399) \\ \hline
+    rcv1 with scaling        & 0.0625   & 96.05\% (650654/677399) \\ \hline
+    covtype (already scaled) & 0.015625 & 63.36\% (73632/116202)  \\ \hline
+    \end{tabular}
+    \caption{Liblinear results}
+\end{table}
+
+Note: The lower accuracy on rcv1 with scaling as compared with without is probably because when scaling the test data, many columns were not available in the original data hence the scaling was imperfect.
+
+\section{LibSVM}
+
+\begin{enumerate}
+\item The training times reported are with 5 fold cross validation.
+\item Apart from these, subsets of the data(as indicated in the ratios in the tables) are used since each run (with one set of parameters) on rcv and covtypes takes ~28 mins
+\item Training set size: rcv: 300, covtypes: 1000
+\item Only the c parameter is reported in these tables, the full data is available in \verb|libsvm_tests.ipynb|
+\end{enumerate}
+
+\begin{table}
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Dataset}                  & \textbf{Final C}  & \textbf{Train time(sec)}       & \textbf{Reported Accuracy}       \\ \hline
+    leukemia                 & 0.25     & 1.10 & 82.35\% (28/34)         \\ \hline
+    leukemia with scaling    & 0.25      & 1.19 & 88.23\% (30/34)         \\ \hline
+    rcv1                     & 1        & 3.14 & 77.56\% (930/1199) \\ \hline
+    rcv1 with scaling        & 0.625   & 3.04 & 77.64\% (931/1199) \\ \hline
+    covtype (already scaled) & 1 & 1.30 & 19.7991\% (690/3485)  \\ \hline
+    \end{tabular}
+    \caption{LibSVM linear kernel}
+\end{table}
+
+\begin{table}
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Dataset}                  & \textbf{Final C}  &\textbf{Train time(sec)}       & \textbf{Reported Accuracy}       \\ \hline
+    leukemia                 & 0.25     & 16.88 & 70.58\% (24/34)         \\ \hline
+    leukemia with scaling    & 0.25      & 17.03 & 88.23\% (30/34)        \\ \hline
+    rcv1                     & 1        & 41.51 &  79.89\% (958/1199) \\ \hline
+    rcv1 with scaling        & 0.625   & 45.22 & 85.40\% (1024/1199) \\ \hline
+    covtype (already scaled) & 1 & 290.08 & 23.64\% (824/3485)  \\ \hline
+    \end{tabular}
+    \caption{LibSVM polynomial kernel degree 2}
+\end{table}
+
+
+\begin{table}
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Dataset}                  & \textbf{Final C}  &\textbf{Train time(sec)}       & \textbf{Reported Accuracy}       \\ \hline
+    leukemia                 & 4     & 16.88 & 61.76\% (21/34)         \\ \hline
+    leukemia with scaling    & 4      & 17.03 & 91.17\% (31/34)        \\ \hline
+    rcv1                     & 1        & 41.51 &  56.71\% (680/1199)\\ \hline
+    rcv1 with scaling        & 4   & 45.22 & 81.65\% (979/1199) \\ \hline
+    covtype (already scaled) & 1 & 290.08 & 29.84\% (895/2999)  \\ \hline
+    \end{tabular}
+    \caption{LibSVM polynomial kernel degree 3}
+\end{table}
+
+
+\begin{table}
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Dataset}                  & \textbf{Final C}  &\textbf{Train time(sec)}       & \textbf{Reported Accuracy}       \\ \hline
+    leukemia                 & 4     & 7.79 & 58.82\% (20/34)         \\ \hline
+    leukemia with scaling    & 4      & 9.77 & 58.82\% (20/34)        \\ \hline
+    rcv1                     & 16        & 22.40 &  79.23\% (950/1199) \\ \hline
+    rcv1 with scaling        & 16   & 22.94 & 82.23\% (986/1199) \\ \hline
+    covtype (already scaled) & 16 & 11.40 & 31.54\% (946/2999)  \\ \hline
+    \end{tabular}
+    \caption{LibSVM RBF Kernel}
+\end{table}
+
+Further details about parameters can be found in \verb|libsvm_tests.ipynb|
+
+\end{document}

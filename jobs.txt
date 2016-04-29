@@ -1,0 +1,40 @@
+./script_smo.py 1 data/train/leu data/test/leu.t smo_models/leu_model_1 > smo_models/leu_model_1.info 
+./script_smo.py 2 data/train/leu data/test/leu.t smo_models/leu_model_2 > smo_models/leu_model_2.info 
+./script_smo.py 3 data/train/leu data/test/leu.t smo_models/leu_model_3 > smo_models/leu_model_3.info 
+echo "Break leu"
+./script_smo.py 1 data/train/leu.scale data/test/leu.t.scale smo_models/leu.scale_model_1 > smo_models/leu.scale_model_1.info 
+./script_smo.py 2 data/train/leu.scale data/test/leu.t.scale smo_models/leu.scale_model_2 > smo_models/leu.scale_model_2.info 
+./script_smo.py 3 data/train/leu.scale data/test/leu.t.scale smo_models/leu.scale_model_3 > smo_models/leu.scale_model_3.info 
+echo "Break leu.scale"
+./script_smo.py 1 data/train/rcv1_train.vred data/test/rcv1_test.vred smo_models/rcv1_model_1 > smo_models/rcv1_model_1.info
+./script_smo.py 2 data/train/rcv1_train.vred data/test/rcv1_test.vred smo_models/rcv1_model_2 > smo_models/rcv1_model_2.info
+./script_smo.py 3 data/train/rcv1_train.vred data/test/rcv1_test.vred smo_models/rcv1_model_3 > smo_models/rcv1_model_3.info 
+echo "Break rcv"
+./script_smo.py 1 data/train/rcv1_train.vred.scale data/test/rcv1_test.vred.scale smo_models/rcv1_model_1 > smo_models/rcv1_model_vred_1.info
+./script_smo.py 2 data/train/rcv1_train.vred.scale data/test/rcv1_test.vred.scale smo_models/rcv1_model_2 > smo_models/rcv1_model_vred_2.info
+./script_smo.py 3 data/train/rcv1_train.vred.scale data/test/rcv1_test.vred.scale smo_models/rcv1_model_3 > smo_models/rcv1_model_vred_3.info 
+echo "Break rcv_scale"
+./script_smo.py 1 data/train/covtype_train.vred.scale data/test/covtype_test.vred.scale smo_models/covtype_model_1 > smo_models/covtype_model_vred_1.info
+./script_smo.py 2 data/train/covtype_train.vred.scale data/test/covtype_test.vred.scale smo_models/covtype_model_2 > smo_models/covtype_model_vred_2.info
+./script_smo.py 3 data/train/covtype_train.vred.scale data/test/covtype_test.vred.scale smo_models/covtype_model_3 > smo_models/covtype_model_vred_3.info 
+echo "Break rcv_scale"
+./script_chunk.py 1 data/train/leu data/test/leu.t chunk_models/leu_model_1 > chunk_models/leu_model_1.info 
+./script_chunk.py 2 data/train/leu data/test/leu.t chunk_models/leu_model_2 > chunk_models/leu_model_2.info 
+./script_chunk.py 3 data/train/leu data/test/leu.t chunk_models/leu_model_3 > chunk_models/leu_model_3.info 
+echo "Break leu"
+./script_chunk.py 1 data/train/leu.scale data/test/leu.t.scale chunk_models/leu.scale_model_1 > chunk_models/leu.scale_model_1.info 
+./script_chunk.py 2 data/train/leu.scale data/test/leu.t.scale chunk_models/leu.scale_model_2 > chunk_models/leu.scale_model_2.info 
+./script_chunk.py 3 data/train/leu.scale data/test/leu.t.scale chunk_models/leu.scale_model_3 > chunk_models/leu.scale_model_3.info 
+echo "Break leu.scale"
+./script_chunk.py 1 data/train/rcv1_train.vred data/test/rcv1_test.vred chunk_models/rcv1_model_1 > chunk_models/rcv1_model_1.info
+./script_chunk.py 2 data/train/rcv1_train.vred data/test/rcv1_test.vred chunk_models/rcv1_model_2 > chunk_models/rcv1_model_2.info
+./script_chunk.py 3 data/train/rcv1_train.vred data/test/rcv1_test.vred chunk_models/rcv1_model_3 > chunk_models/rcv1_model_3.info 
+echo "Break rcv"
+./script_chunk.py 1 data/train/rcv1_train.vred.scale data/test/rcv1_test.vred.scale chunk_models/rcv1_model_1 > chunk_models/rcv1_model_vred_1.info
+./script_chunk.py 2 data/train/rcv1_train.vred.scale data/test/rcv1_test.vred.scale chunk_models/rcv1_model_2 > chunk_models/rcv1_model_vred_2.info
+./script_chunk.py 3 data/train/rcv1_train.vred.scale data/test/rcv1_test.vred.scale chunk_models/rcv1_model_3 > chunk_models/rcv1_model_vred_3.info 
+echo "Break rcv_scale"
+./script_chunk.py 1 data/train/covtype_train.vred.scale data/test/covtype_test.vred.scale chunk_models/covtype_model_1 > chunk_models/covtype_model_vred_1.info
+./script_chunk.py 2 data/train/covtype_train.vred.scale data/test/covtype_test.vred.scale chunk_models/covtype_model_2 > chunk_models/covtype_model_vred_2.info
+./script_chunk.py 3 data/train/covtype_train.vred.scale data/test/covtype_test.vred.scale chunk_models/covtype_model_3 > chunk_models/covtype_model_vred_3.info 
+echo "Break rcv_scale"

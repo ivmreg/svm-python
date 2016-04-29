@@ -1,0 +1,11 @@
+Training on data/train/rcv1_train.red.scale
+     pcost       dcost       gap    pres   dres
+ 0: -2.8307e-01 -2.1637e+01  2e+01  1e-16  7e-16
+ 1: -5.7465e-01 -1.2983e+00  7e-01  2e-16  6e-16
+ 2: -6.1578e-01 -6.4145e-01  3e-02  1e-16  2e-16
+ 3: -6.1625e-01 -6.1687e-01  6e-04  2e-16  1e-16
+ 4: -6.1630e-01 -6.1632e-01  2e-05  2e-16  1e-16
+ 5: -6.1631e-01 -6.1631e-01  2e-06  1e-16  1e-16
+ 6: -6.1631e-01 -6.1631e-01  6e-08  2e-16  2e-16
+Optimal solution found.
+iteration: 2
